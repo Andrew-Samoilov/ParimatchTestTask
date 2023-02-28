@@ -1,0 +1,51 @@
+.mainDiv{
+    background-color: ghostwhite;
+    border: 1px solid lightblue;
+    border-radius: 0.25em;
+    margin: 1em;
+    padding: 1em;
+    min-width: 300px;
+}
+
+.toDoForm{
+    display: flex;
+    justify-content: space-between;
+    align-items:last baseline;
+    background-color: azure;
+    /* border: 1px solid lightblue; */
+    border-radius: 0.25em;
+    padding: 1em;
+}
+
+.toDoLabel {
+    padding-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.25em;
+}
+
+.toDoField {
+    margin-top: 1em;
+    border: 2px solid lightblue;
+    border-radius: 0.25em;
+}
+
+.button {
+    border: 1px solid lightblue;
+    border-radius: 0.25em;
+    cursor: pointer;
+}
+
+.liHead {
+    display: flex;
+    justify-content: space-between;
+}
+.liItem{
+    display: flex;
+    justify-content:space-between;
+    padding-bottom: 0.25em;
+}
+.toDoUl{
+    list-style: none;
+    padding-left: 2em;
+}
