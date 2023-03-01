@@ -2,26 +2,25 @@ import React from "react";
 import AddToDoForm from "./AddToDoForm";
 import { ToDoList } from "./ToDoList";
 import css from "./ToDo.module.css";
+import ToDoModal from './ToDoModal';
 
 class App extends React.Component {
   state = {
     todos: [],
     MaxId: 0,
+    showModal: false,
+    currentId:0,
   }
 
   componentDidMount() {
-    console.log('App componentDidMount');
+    // console.log('App componentDidMount');
 
-    const todos = localStorage.getItem('todos');
-    const parsedTodos = JSON.parse(todos);
-
+    const parsedTodos = JSON.parse(localStorage.getItem('todos'));
     if (parsedTodos) {
       this.setState({ todos: parsedTodos });
     }
 
-    const MaxId = localStorage.getItem('MaxId');
-    const parsedMaxId = JSON.parse(MaxId);
-
+    const parsedMaxId = JSON.parse(localStorage.getItem('MaxId'));
     if (parsedMaxId) {
       this.setState({ MaxId: parsedMaxId });
     }
@@ -29,13 +28,14 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log('componentDidUpdate');
+    // console.log('componentDidUpdate');
 
     if (this.state.todos !== prevState.todos) {
-      console.log('update todos ');
+      // console.log('update todos ');
       localStorage.setItem('todos', JSON.stringify(this.state.todos));
       localStorage.setItem('MaxId', JSON.stringify(this.state.MaxId));
     }
+
   }
 
   formSubmitHandler = data => {
@@ -55,6 +55,9 @@ class App extends React.Component {
 
   toggleCompleted = todoId => {
     console.log(`toggleCompleted , ${todoId}`);
+
+    this.setState(({ state }) => ({ currentId: todoId }));
+
     this.setState(({ todos }) => ({
       todos: todos.map(todo =>
         todo.id === todoId ? { ...todo, completed: !todo.completed } : todo,
@@ -64,15 +67,32 @@ class App extends React.Component {
 
   toggleModal = todoId => {
     console.log(` click ${todoId}`);
-    // this.setState(({ showModal }) => ({
-    //   showModal: !showModal,
-    // }));
+    this.setState(({ state }) => ({ currentId: todoId }));
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
   };
 
   render() {
     return (
       <div className={css.mainDiv}>
         <AddToDoForm onSubmit={this.formSubmitHandler} />
+
+        {this.state.showModal && (
+          <ToDoModal onClose={this.toggleModal}>
+            <h1>{this.state.todos.find(({ id }) => id === this.state.currentId).title}</h1> 
+            <h2>Description</h2>
+            <p>{this.state.todos.find(({ id }) => id === this.state.currentId).description}</p>
+            <input
+              className={css.toDoChek}
+              type="checkbox"
+              onChange={this.toggleCompleted}
+              defaultChecked={this.state.todos.find(({ id }) => id === this.state.currentId).completed}
+            />
+            <button type="button" onClick={this.toggleModal}>Close</button>
+          </ToDoModal>
+        )}
+
         <ToDoList
           onClick={this.toggleModal}
           stateTodos={this.state.todos}
