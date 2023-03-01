@@ -45,7 +45,8 @@ class App extends React.Component {
       description: data.description,
       completed: false,
     }
-    console.log(`formSubmitHandler ${newData}`);
+    // console.log(`formSubmitHandler ${newData}`);
+
     this.setState(({ todos, MaxId }) => ({
       todos: [...todos, newData],
       MaxId: MaxId+1,
@@ -79,16 +80,20 @@ class App extends React.Component {
         <AddToDoForm onSubmit={this.formSubmitHandler} />
 
         {this.state.showModal && (
-          <ToDoModal onClose={this.toggleModal}>
+          <ToDoModal
+            onClose={this.toggleModal}
+          >
             <h1>{this.state.todos.find(({ id }) => id === this.state.currentId).title}</h1> 
-            <h2>Description</h2>
+            <h2>Description:</h2>
             <p>{this.state.todos.find(({ id }) => id === this.state.currentId).description}</p>
+            <p>Status: 
             <input
               className={css.toDoChek}
               type="checkbox"
-              onChange={this.toggleCompleted}
+              onChange={() => this.toggleCompleted(this.state.currentId)}
               defaultChecked={this.state.todos.find(({ id }) => id === this.state.currentId).completed}
-            />
+              />
+            </p>
             <button type="button" onClick={this.toggleModal}>Close</button>
           </ToDoModal>
         )}

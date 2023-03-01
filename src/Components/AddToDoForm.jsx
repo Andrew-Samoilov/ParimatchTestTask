@@ -5,17 +5,32 @@ class AddToDoForm extends React.Component {
     state = {
         title: '',
         description: '',
-        completed: false,
+        titleErrorVisible: false,
+        descriptionErrorVisible: false,
     }
 
     handleChange = e => {
+        e.preventDefault();
         this.setState({ [e.currentTarget.name]: e.currentTarget.value, });
+        this.setState({ descriptionErrorVisible: false });
+        this.setState({ titleErrorVisible: false });
     };
 
     handleSubmit = e => {
-        console.log(`AddToDoForm handleSubmit`, this.state);
         e.preventDefault();
-        this.props.onSubmit(this.state);  
+        // console.log(`AddToDoForm handleSubmit`, this.state);
+        if (!this.state.title) {
+            this.setState({ titleErrorVisible:true });
+        }
+
+        if (!this.state.description) {
+            this.setState({ descriptionErrorVisible: true });
+        } 
+
+        if (this.state.description || this.state.title) {
+            this.props.onSubmit(this.state); 
+        } 
+        
     };
 
     render() {
@@ -26,20 +41,28 @@ class AddToDoForm extends React.Component {
                         className={css.toDoField}
                         type="text"
                         name="title"
-                        value={this.state.name}
+                        placeholder="Enter title"
+                        value={this.state.name}      
                         onChange={this.handleChange}
-                        required
+                        // required= "The field is required"
                     />
+                    {this.state.titleErrorVisible &&(
+                        <div className={css.errorMsg}>This field is empty</div>
+                    )}               
                 </label>
                 <label className={css.toDoLabel}>Description:
                     <input
                         className={css.toDoField}
                         type="text"
                         name="description"
+                        placeholder="Enter description"
                         value={this.state.name}
                         onChange={this.handleChange}
-                        required
+                        // required
                     />
+                    {this.state.descriptionErrorVisible && (
+                        <div className={css.errorMsg}>This field is empty</div>
+                    )} 
                 </label>
                 <button className={css.button} type="submit">Create</button>
             </form> 
