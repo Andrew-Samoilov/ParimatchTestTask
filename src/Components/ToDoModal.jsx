@@ -31,7 +31,8 @@ export default class ToDoModal extends Component{
 
     render() {
         return createPortal(
-            <div className={css.ModalBackdrop} onClick={this.handleBackdropClick}>
+            <div className={css.ModalBackdrop}
+                onClick={this.handleBackdropClick}>
                 <div className={css.ModalContent}>
                     {console.log(this.props)}
                     {this.props.children}
